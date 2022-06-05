@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { AuthContext } from "../contexts/auth/AuthContext";
-import { baseUrlInstance } from "../api/axios";
+import { baseUrlInstance } from "../api/axiosBaseUrl";
+import { useNavigate } from "react-router-dom";
 
 const LOGIN_URL = "/healthmonitor/users/login";
 
@@ -11,6 +12,7 @@ export const Login = () => {
   const errorRef = useRef();
   const {setAuth} = useContext(AuthContext);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setErrorMessage("");
@@ -34,7 +36,10 @@ export const Login = () => {
       if (responseData["username"] === username && responseData["password"] === password) {
         setIsAuthenticated(true);
       }
-      setIsAuthenticated(true);   // force authentication to continue to routing
+      
+      if (isAuthenticated === true) {
+        navigate("patients-dashboard")
+      }
 
       // console.log(JSON.stringify(response?.data));
     } catch (error) {
@@ -48,11 +53,13 @@ export const Login = () => {
         setErrorMessage("Login failed.");
       }
       errorRef.current.focus();
+    } finally {     // force authentication to continue to routing
+      navigate("patients-dashboard")  
     }
   }
 
   return (
-    <div>
+    <>
       <h1>Login Page</h1>
       <form onSubmit={loginSubmitHandler}>
         <fieldset>
@@ -79,6 +86,6 @@ export const Login = () => {
         </fieldset>
       </form>
       <p ref={errorRef}>{errorMessage}</p> 
-    </div>
+    </>
   );
 }
