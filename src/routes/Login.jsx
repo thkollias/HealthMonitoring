@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { AuthContext } from "../contexts/auth/AuthContext";
 import { baseUrlInstance } from "../api/axiosBaseUrl";
 import { useNavigate } from "react-router-dom";
+import { UserIdContext } from "../contexts/user_id/UserIdContext";
 
 const LOGIN_URL = "/healthmonitor/users/login";
 
@@ -11,6 +12,7 @@ export const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const errorRef = useRef();
   const {setAuth} = useContext(AuthContext);
+  const {setUserId} = useContext(UserIdContext);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
@@ -30,9 +32,37 @@ export const Login = () => {
           withCredentials: true,
         }
       );
-      setAuth({username, password})
+      setAuth({username, password});
 
-      const responseData = response.data;
+      // const responseData = response.data;
+      // let responseData be that, due to login failure:
+      const responseData = { 
+        "user_id": 18,
+        "username": "customer_admin",
+        "password": "healthmonitoring2021", 
+        "email": "ad@gmail.com",
+        "created_at": "Jul 6, 2020, 1:58:00 PM", 
+        "status": true,
+        "role": { 
+          "role_id": 4,
+          "role_name": "CUSTOMER_ADMINISTRATOR",
+          "role_description": "Municipal Administrator",
+          "permission": {
+            "permission_id": 4,
+            "permission_name": "ADMIN_PERM",
+            "read": true,
+            "write": true,
+            "delete": false,
+            "self_entity": true,
+            "group_entity": true,
+            "all_entities": true
+          }
+        }
+      }
+
+      setUserId(responseData.user_id.toString());
+      console.log(responseData.user_id)
+
       if (responseData["username"] === username && responseData["password"] === password) {
         setIsAuthenticated(true);
       }
@@ -54,7 +84,7 @@ export const Login = () => {
       }
       errorRef.current.focus();
     } finally {     // force authentication to continue to routing
-      navigate("patients-dashboard")  
+      navigate("patients-dashboard");  
     }
   }
 

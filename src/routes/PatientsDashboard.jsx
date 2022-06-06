@@ -1,22 +1,29 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect, useContext } from "react";
 import { baseUrlInstance } from "../api/axiosBaseUrl";
 import { PatientsList } from "../components/PatientsList";
 import { useNavigate } from "react-router-dom";
+import { UserIdContext } from "../contexts/user_id/UserIdContext";
 
+// const USER_ID = 18;
 export const PatientsDashBoard = () => {
   const [patients, setPatients] = useState([]);
+  const {userId} = useContext(UserIdContext);
+  const PATIENTS_DASHBOARD_URL = `/healthmonitor/patients?user_id=18`;
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://....../healthmonitor/patients?user_id=18`)
-      .then(response => {
+    try {
+      const fetchData = async () => {
+        const response = await baseUrlInstance.get(
+          PATIENTS_DASHBOARD_URL
+        );
         console.log(response);
         setPatients(response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      })
+      }
+    fetchData();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   return (

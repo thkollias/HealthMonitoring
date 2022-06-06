@@ -1,9 +1,11 @@
+import styles from "../styles/Styles.module.css";
+
 export const PatientsList = ({patients, clickHandler}) => {
   return (
     <ul>
       {
         patients.map((patient => 
-          <div key={patient.patient_id.toString()} className="patient-in-dashboard">
+          <section key={patient.patient_id.toString()} className={styles.patientInDashboard}>
             <p>{patient.firstname} {patient.lastname}  (Sex: {patient.sex})</p>
             <div>
               {
@@ -33,7 +35,7 @@ export const PatientsList = ({patients, clickHandler}) => {
               }
             </div>
             <button onClick={clickHandler}>Patient details</button>
-          </div>
+          </section>
         ))
       }
     </ul>
