@@ -1,2 +1,3 @@
-const IP_ADDRESS = "http:// PUT IP ADDRESS HERE ";
+const IP_ADDRESS = "http://......";   // PLEASE PUT IP ADDRESS HERE
+
 export default IP_ADDRESS;
