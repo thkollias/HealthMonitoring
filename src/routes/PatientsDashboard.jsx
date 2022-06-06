@@ -3,8 +3,8 @@ import { baseUrlInstance } from "../api/axiosBaseUrl";
 import { PatientsList } from "../components/PatientsList";
 import { useNavigate } from "react-router-dom";
 import { UserIdContext } from "../contexts/user_id/UserIdContext";
+import { ApplicationBar } from "../components/ApplicationBar"
 
-// const USER_ID = 18;
 export const PatientsDashBoard = () => {
   const [patients, setPatients] = useState([]);
   const {userId} = useContext(UserIdContext);
@@ -28,7 +28,7 @@ export const PatientsDashBoard = () => {
 
   return (
     <>
-      {/* {children}  //for app bar */}
+      <ApplicationBar />
       <PatientsList patients={patients} clickHandler={() => {
         navigate("selected-patient");
       }} />
